@@ -35,7 +35,7 @@ jobs:
       - name: build the image
         run: |
           docker buildx build \
-            --file Dockerfile.phpmyadmin-php7.4-fpm.buildx \
+            --file Dockerfile.phpmyadmin-php7.4-fpm-alpine.buildx \
             --platform linux/amd64,linux/386,linux/arm64,linux/arm/v7 \
             --tag carlesbarreda/phpmyadmin:5.1.0-php7.4-fpm-alpine \
             --tag carlesbarreda/phpmyadmin:php7.4-fpm-alpine \
@@ -43,7 +43,7 @@ jobs:
             --tag carlesbarreda/phpmyadmin:php7.4-fpm \
             --push .
           docker buildx build \
-            --file Dockerfile.phpmyadmin-php8.0-fpm.buildx \
+            --file Dockerfile.phpmyadmin-php8.0-fpm-alpine.buildx \
             --platform linux/amd64,linux/386,linux/arm64,linux/arm/v7 \
             --tag carlesbarreda/phpmyadmin:5.1.0-php8.0-fpm-alpine \
             --tag carlesbarreda/phpmyadmin:php8.0-fpm-alpine \
