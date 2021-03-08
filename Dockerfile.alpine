@@ -1,0 +1,60 @@
+ARG VERSION
+ARG VARIANT
+FROM --platform=${TARGETPLATFORM} carlesbarreda/php:${VERSION}-${VARIANT}-alpine
+
+ARG TARGETPLATFORM
+
+ARG BUILDPLATFORM
+
+# Calculate download URL
+ENV VERSION 5.1.0
+ENV SHA256 aa8ccf357f672012384df34e1c2bc70147476761c8458a0dad6233497e142c68
+ENV URL https://files.phpmyadmin.net/phpMyAdmin/${VERSION}/phpMyAdmin-${VERSION}-all-languages.tar.xz
+
+#LABEL org.opencontainers.image.title="Official phpMyAdmin Docker image" \
+#    org.opencontainers.image.description="Run phpMyAdmin with Alpine, Apache and PHP FPM." \
+#    org.opencontainers.image.authors="The phpMyAdmin Team <developers@phpmyadmin.net>" \
+#    org.opencontainers.image.vendor="phpMyAdmin" \
+#    org.opencontainers.image.documentation="https://github.com/phpmyadmin/docker#readme" \
+#    org.opencontainers.image.licenses="GPL-2.0-only" \
+#    org.opencontainers.image.version="${VERSION}" \
+#    org.opencontainers.image.url="https://github.com/phpmyadmin/docker#readme" \
+#    org.opencontainers.image.source="https://github.com/phpmyadmin/docker.git"
+
+# Download tarball, verify it using gpg and extract
+RUN set -ex; \
+    apk add --no-cache --virtual .fetch-deps \
+        gnupg \
+    ; \
+    \
+    export GNUPGHOME="$(mktemp -d)"; \
+    export GPGKEY="3D06A59ECE730EB71B511C17CE752F178259BD92"; \
+    curl -fsSL -o phpMyAdmin.tar.xz $URL; \
+    curl -fsSL -o phpMyAdmin.tar.xz.asc $URL.asc; \
+    echo "$SHA256 *phpMyAdmin.tar.xz" | sha256sum -c -; \
+    gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$GPGKEY" \
+        || gpg --batch --keyserver ipv4.pool.sks-keyservers.net --recv-keys "$GPGKEY" \
+        || gpg --batch --keyserver keys.gnupg.net --recv-keys "$GPGKEY" \
+        || gpg --batch --keyserver pgp.mit.edu --recv-keys "$GPGKEY" \
+        || gpg --batch --keyserver keyserver.pgp.com --recv-keys "$GPGKEY"; \
+    gpg --batch --verify phpMyAdmin.tar.xz.asc phpMyAdmin.tar.xz; \
+    tar -xf phpMyAdmin.tar.xz -C /var/www/html --strip-components=1; \
+    mkdir -p /var/www/html/tmp; \
+    chown www-data:www-data /var/www/html/tmp; \
+    gpgconf --kill all; \
+    rm -r "$GNUPGHOME" phpMyAdmin.tar.xz phpMyAdmin.tar.xz.asc; \
+    rm -rf /var/www/html/setup/ /var/www/html/examples/ /var/www/html/test/ /var/www/html/po/ /var/www/html/composer.json /var/www/html/RELEASE-DATE-$VERSION; \
+    sed -i "s@define('CONFIG_DIR'.*@define('CONFIG_DIR', '/etc/phpmyadmin/');@" /var/www/html/libraries/vendor_config.php; \
+    apk del --no-network .fetch-deps
+
+# Copy configuration
+COPY config.inc.php /etc/phpmyadmin/config.inc.php
+
+# Copy main script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+CMD ["php-fpm"]
+
+#docker build -t carlesbarreda/phpmyadmin:5.1.0-php7.4-fpm-alpine -f Dockerfile.phpmyadmin-php7.4-fpm.buildx .
+#docker run -ti --rm --name wp7.4-fpm-dev carlesbarreda/phpmyadmin:5.1.0-php7.4-fpm-alpine /bin/sh

@@ -1,6 +1,4 @@
-FROM --platform=${BUILDPLATFORM} carlesbarreda/php:8.0.3-fpm-alpine
-
-ARG BUILDPLATFORM
+FROM carlesbarreda/php:8.0.3-fpm-alpine
 
 # Calculate download URL
 ENV VERSION 5.1.0
@@ -52,5 +50,5 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 CMD ["php-fpm"]
 
-#docker build -t carlesbarreda/phpmyadmin:5.1.0-php8.0-fpm-alpine -f Dockerfile.phpmyadmin-php8.0-fpm.buildx .
-#docker run -ti --rm --name wp8.0-fpm-dev carlesbarreda/phpmyadmin:5.1.0-php8.0-fpm-alpine /bin/sh
+#docker build -t carlesbarreda/phpmyadmin:5.1.0-php7.4-fpm-alpine -f Dockerfile.phpmyadmin-php7.4-fpm.buildx .
+#docker run -ti --rm --name wp7.4-fpm-dev carlesbarreda/phpmyadmin:5.1.0-php7.4-fpm-alpine /bin/sh
