@@ -9,15 +9,15 @@ ENV VERSION 5.1.0
 ENV SHA256 aa8ccf357f672012384df34e1c2bc70147476761c8458a0dad6233497e142c68
 ENV URL https://files.phpmyadmin.net/phpMyAdmin/${VERSION}/phpMyAdmin-${VERSION}-all-languages.tar.xz
 
-LABEL org.opencontainers.image.title="Official phpMyAdmin Docker image" \
-    org.opencontainers.image.description="Run phpMyAdmin with Alpine, Apache and PHP FPM." \
-    org.opencontainers.image.authors="The phpMyAdmin Team <developers@phpmyadmin.net>" \
-    org.opencontainers.image.vendor="phpMyAdmin" \
-    org.opencontainers.image.documentation="https://github.com/phpmyadmin/docker#readme" \
-    org.opencontainers.image.licenses="GPL-2.0-only" \
-    org.opencontainers.image.version="${VERSION}" \
-    org.opencontainers.image.url="https://github.com/phpmyadmin/docker#readme" \
-    org.opencontainers.image.source="https://github.com/phpmyadmin/docker.git"
+#LABEL org.opencontainers.image.title="Official phpMyAdmin Docker image" \
+#    org.opencontainers.image.description="Run phpMyAdmin with Alpine, Apache and PHP FPM." \
+#    org.opencontainers.image.authors="The phpMyAdmin Team <developers@phpmyadmin.net>" \
+#    org.opencontainers.image.vendor="phpMyAdmin" \
+#    org.opencontainers.image.documentation="https://github.com/phpmyadmin/docker#readme" \
+#    org.opencontainers.image.licenses="GPL-2.0-only" \
+#    org.opencontainers.image.version="${VERSION}" \
+#    org.opencontainers.image.url="https://github.com/phpmyadmin/docker#readme" \
+#    org.opencontainers.image.source="https://github.com/phpmyadmin/docker.git"
 
 # Download tarball, verify it using gpg and extract
 RUN set -ex; \
