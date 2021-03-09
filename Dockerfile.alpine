@@ -4,8 +4,6 @@ FROM --platform=${TARGETPLATFORM} carlesbarreda/php:${VERSION}-${VARIANT}-alpine
 
 ARG TARGETPLATFORM
 
-ARG BUILDPLATFORM
-
 # Calculate download URL
 ENV VERSION 5.1.0
 ENV SHA256 aa8ccf357f672012384df34e1c2bc70147476761c8458a0dad6233497e142c68
@@ -42,7 +40,7 @@ RUN set -ex; \
     mkdir -p /var/www/html/tmp; \
     chown www-data:www-data /var/www/html/tmp; \
     gpgconf --kill all; \
-    rm -r "$GNUPGHOME" phpMyAdmin.tar.xz phpMyAdmin.tar.xz.asc; \
+    rm -rf "$GNUPGHOME" phpMyAdmin.tar.xz phpMyAdmin.tar.xz.asc; \
     rm -rf /var/www/html/setup/ /var/www/html/examples/ /var/www/html/test/ /var/www/html/po/ /var/www/html/composer.json /var/www/html/RELEASE-DATE-$VERSION; \
     sed -i "s@define('CONFIG_DIR'.*@define('CONFIG_DIR', '/etc/phpmyadmin/');@" /var/www/html/libraries/vendor_config.php; \
     apk del --no-network .fetch-deps
