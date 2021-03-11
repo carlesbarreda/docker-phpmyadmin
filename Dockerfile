@@ -49,6 +49,3 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 CMD ["php-fpm"]
-
-#docker build -t carlesbarreda/phpmyadmin:5.1.0-php7.4-fpm-alpine -f Dockerfile.phpmyadmin-php7.4-fpm.buildx .
-#docker run -ti --rm --name wp7.4-fpm-dev carlesbarreda/phpmyadmin:5.1.0-php7.4-fpm-alpine /bin/sh
